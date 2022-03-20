@@ -8,6 +8,7 @@ import testDBConnection from './utils/testDBConnection.js'
 
 import homeRoutes from './routes/homeRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import categoryRoutes from './routes/categoryRoutes.js'
 
 dotenv.config()
 testDBConnection(db)
@@ -24,6 +25,8 @@ app.use(express.json())
 
 app.use('/', homeRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/article-category', categoryRoutes)
+
 
 app.use(notFound)
 app.use(errorHandler)
