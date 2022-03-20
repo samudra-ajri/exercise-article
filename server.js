@@ -2,10 +2,12 @@ import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 
-import homeRoutes from './routes/homeRoutes.js'
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 import db from './config/database.js'
 import testDBConnection from './utils/testDBConnection.js'
+
+import homeRoutes from './routes/homeRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 dotenv.config()
 testDBConnection(db)
@@ -18,7 +20,10 @@ if (ENV === 'development') {
     app.use(morgan('dev'))
 }
 
+app.use(express.json())
+
 app.use('/', homeRoutes)
+app.use('/api/auth', authRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
