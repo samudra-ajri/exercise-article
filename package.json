@@ -2,9 +2,11 @@
   "name": "exercise-article",
   "version": "1.0.0",
   "description": "A simple articles rest api",
+  "type": "module",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "server": "nodemon server"
   },
   "repository": {
     "type": "git",
