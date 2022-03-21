@@ -63,6 +63,22 @@ const router = express.Router()
  *   get:
  *     summary: Returns the articles list
  *     tags: [Articles]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: search article title
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: page pagination
+ *       - in: query
+ *         name: size
+ *         schema:
+ *           type: integer
+ *         description: size of the shown results
  *     responses:
  *       200:
  *         description: Get Articles Success
