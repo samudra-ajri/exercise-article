@@ -40,6 +40,24 @@ const options = {
 				url: process.env.APP_URL,
 			}
 		],
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: "apiKey",
+					name: "x-auth-token",
+					scheme: "bearer",
+					in: "header",
+				},
+			},
+		},
+		security: [
+			{
+			bearerAuth: {
+				type: "http",
+				scheme: "bearer",
+				},
+			},
+		],
 	},
 	apis: ["./routes/*.js"],
 };
