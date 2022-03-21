@@ -1,8 +1,9 @@
 import asyncHandler from 'express-async-handler'
-import { responseBody } from '../helpers/responseBodyHelpers.js'
+import { responseBody, responseBodyList } from '../helpers/responseBodyHelpers.js'
 import Article from '../models/Article.js'
 import User from '../models/User.js'
 import Category from '../models/Category.js'
+import { Op } from 'sequelize'
 
 // @desc    Create new article
 // @route   POST /api/articles/create
@@ -30,7 +31,17 @@ const createArticle = asyncHandler(async (req, res) => {
 // @route   GET /api/articles
 // @access  public
 const getArticles = asyncHandler(async (req, res) => {
-    const article = await Article.findAll({ 
+    const { page = 1, size = 10, search = '' } = req.query;
+    
+    const limit  = size
+    const offset = (page - 1) * limit;
+
+    const article = await Article.findAndCountAll({
+        where: {
+            title: { [Op.iLike]: '%' + search + '%' }
+        },
+        limit,
+        offset,
         include: [{
             model: User,
             as: 'author',
@@ -43,7 +54,7 @@ const getArticles = asyncHandler(async (req, res) => {
         }]
     })
     if (article) {
-        responseBody(res, article, 'Get Articles Success')
+        responseBodyList(res, req, article, 'Get Articles Success')
     } else {
         res.status(400)
         throw new Error('Not Found')
