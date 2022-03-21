@@ -1,10 +1,13 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerUI from 'swagger-ui-express'
 
 import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 import db from './config/database.js'
 import testDBConnection from './utils/testDBConnection.js'
+
 
 import homeRoutes from './routes/homeRoutes.js'
 import authRoutes from './routes/authRoutes.js'
@@ -23,6 +26,26 @@ if (ENV === 'development') {
 }
 
 app.use(express.json())
+
+const options = {
+	definition: {
+		openapi: "3.0.0",
+		info: {
+			title: "Library API",
+			version: "1.0.0",
+			description: "A simple Express Library API",
+		},
+		servers: [
+			{
+				url: process.env.APP_URL,
+			}
+		],
+	},
+	apis: ["./routes/*.js"],
+};
+
+const specs = swaggerJsDoc(options);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use('/', homeRoutes)
 app.use('/api/auth', authRoutes)
